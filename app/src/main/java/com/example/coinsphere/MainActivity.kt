@@ -8,9 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +44,7 @@ class MainActivity : ComponentActivity() {
                     Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
+                        .padding(horizontal = 16.dp)
                 ) {
                     HomeScreen()
                 }
@@ -54,18 +54,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun InfoCard(title: String, value: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(0.dp)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(title, color = TextDim, fontSize = 12.sp)
+            Spacer(Modifier.height(8.dp))
+            Text(value, color = MaterialTheme.colorScheme.onSurface, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+        }
+    }
+}
+
+@Composable
 fun HomeScreen() {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 20.dp)
+            .padding(vertical = 20.dp)
+            .padding(horizontal = 16.dp)
     ) {
-        Text(
-            text = "CoinSphere",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        Text("CoinSphere", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+        Spacer(Modifier.height(16.dp))
+        InfoCard("Global Market Cap", "$2.18T"); Spacer(Modifier.height(12.dp))
+        InfoCard("Fear & Greed", "Neutral (54)"); Spacer(Modifier.height(12.dp))
+        InfoCard("Altcoin Season", "No")
     }
 }
 
@@ -77,7 +93,6 @@ fun PreviewHomeScreen() {
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 16.dp)
         ) {
             HomeScreen()
         }
