@@ -7,15 +7,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 private val Background = Color(0xFF0B1020)
 private val Surface    = Color(0xFF151B2E)
@@ -53,7 +55,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen() {
-    Text("CoinSphere", color = TextMain)
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 20.dp)
+    ) {
+        Text(
+            text = "CoinSphere",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
 }
 
 @Preview(name = "HomeScreen", showBackground = true, backgroundColor = 0xFF0B1020)
@@ -64,6 +77,7 @@ fun PreviewHomeScreen() {
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 16.dp)
         ) {
             HomeScreen()
         }
