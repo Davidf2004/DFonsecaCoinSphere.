@@ -8,9 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +49,6 @@ class MainActivity : ComponentActivity() {
                     Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
-                        .padding(horizontal = 16.dp)
                 ) {
                     HomeScreen()
                 }
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CryptoRow(position: Int, crypto: Crypto) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(0.dp)
@@ -101,21 +102,63 @@ fun InfoCard(title: String, value: String) {
 
 @Composable
 fun HomeScreen() {
-    Column(Modifier.fillMaxSize().padding(vertical = 20.dp)) {
-        Text("CoinSphere", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-        Spacer(Modifier.height(16.dp))
-        InfoCard("Global Market Cap", "$2.18T"); Spacer(Modifier.height(12.dp))
-        InfoCard("Fear & Greed", "Neutral (54)"); Spacer(Modifier.height(12.dp))
-        InfoCard("Altcoin Season", "No"); Spacer(Modifier.height(20.dp))
+    val top10 = remember {
+        listOf(
+            Crypto("Bitcoin",   "$109,797.37", ""),
+            Crypto("Ethereum",  "$4,321.21",   ""),
+            Crypto("Tether",    "$1.0000",     ""),
+            Crypto("XRP",       "$2.8100",     ""),
+            Crypto("BNB",       "$845.0000",   ""),
+            Crypto("Solana",    "$201.8500",   ""),
+            Crypto("USDC",      "$0.9998",     ""),
+            Crypto("Dogecoin",  "$0.1320",     ""),
+            Crypto("TRON",      "$0.3630",     ""),
+            Crypto("SolarisX",  "$0.0100",     "")
+        )
+    }
 
-        Row(Modifier.fillMaxWidth().padding(bottom = 8.dp, start = 16.dp, end = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("#", color = TextDim, fontSize = 12.sp, modifier = Modifier.width(20.dp))
-            Text("Name", color = TextDim, fontSize = 12.sp, modifier = Modifier.weight(1f))
-            Text("Price", color = TextDim, fontSize = 12.sp)
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 20.dp, bottom = 24.dp)
+    ) {
+        item {
+            Text(
+                text = "CoinSphere",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(Modifier.height(16.dp))
         }
-        Divider(color = Separator, thickness = 5.dp)
 
-        Spacer(Modifier.height(15.dp))
+        item {
+            InfoCard("Global Market Cap", "$2.18T"); Spacer(Modifier.height(12.dp))
+            InfoCard("Fear & Greed", "Neutral (54)"); Spacer(Modifier.height(12.dp))
+            InfoCard("Altcoin Season", "No"); Spacer(Modifier.height(20.dp))
+        }
+
+        item {
+            Column(Modifier.padding(horizontal = 16.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("#", color = TextDim, fontSize = 12.sp, modifier = Modifier.width(20.dp))
+                    Text("Name", color = TextDim, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                    Text("Price", color = TextDim, fontSize = 12.sp)
+                }
+                Divider(color = Separator, thickness = 5.dp)
+                Spacer(Modifier.height(15.dp))
+            }
+        }
+
+        itemsIndexed(top10) { index, coin ->
+            CryptoRow(index + 1, coin)
+            Spacer(Modifier.height(10.dp))
+        }
     }
 }
 
